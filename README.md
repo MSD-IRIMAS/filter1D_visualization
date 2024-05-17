@@ -1,6 +1,6 @@
 # filter1D_visualization
 
-Automatically generate a html (`index.html`) page showing a 2D space of 1D convolution-based filters as usually used in [Deep Learning for Time Series Classification](https://msd-irimas.github.io/pages/dl4tsc/). It is mainly based on [Bokeh library](https://github.com/bokeh/bokeh).
+Automatically generate a html (`index.html`) page showing a 2D space of 1D convolution-based filters as usually used in [Deep Learning for Time Series Classification](https://msd-irimas.github.io/pages/dl4tsc/). It is mainly based on [Bokeh library](https://github.com/bokeh/bokeh) and [Aeon](https://github.com/aeon-toolkit/aeon).
 
 
 ## Usage
