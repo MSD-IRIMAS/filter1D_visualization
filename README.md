@@ -11,7 +11,7 @@ python main.py --models M [M ...] --layers L [L ...] [--distance D] [--outdir OU
 With:
 - `M`: a list of Deep model paths
 - `L`: a list of layer indexes in corresponding models
-- `D`: a distance to compare filters among available distances in [Aeon](https://www.aeon-toolkit.org/en/stable/api_reference/distances.html)
+- `D`: a distance to compare filters among available distances in [Aeon](https://www.aeon-toolkit.org/en/stable/api_reference/distances.html) (default: 'dtw')
 - `OUTDIR`: output directory to generate the html file (default: `out/`)
 - `TITLE`: title of the html page (default: 'Filter visualization')
 
