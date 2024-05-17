@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 from .utils.utils import *
-from aeon.distances import dtw_distance
+from aeon.distances import dtw_pairwise_distance
 from sklearn.manifold import TSNE
 
 
@@ -46,7 +46,8 @@ def load_model_filters(model_path, layer_index):
 	layer = model.layers[layer_index]
 	if isinstance(layer, accepted_layers):
 		filters = layer.get_weights()[0]
-		filters = np.transpose(filters,(1,0,2))
+		filters = np.reshape(filters,(filters.shape[0],-1))
+		filters = np.swapaxes(np.reshape(filters,(filters.shape[0],-1)),axis1=0,axis2=1)
 		filters = znormalisation(filters)
 	else:
 		print('Layer ' + layer.name + ' is not a 1D convolution-based layer')
@@ -64,13 +65,7 @@ def compute_tsne_coordinates(filters):
 
 def compute_dtw_matrix(filters):
 
-	dtw_matrix = np.zeros((filters.shape[0],filters.shape[0]))
-	for i in range(filters.shape[0]):
-		for j in range(filters.shape[0]):
-			if i==j:
-				dtw_matrix[i,j]=0
-			else:
-				dtw_matrix[i,j]=dtw_distance(filters[i,:,:],filters[j,:,:])
+	dtw_matrix = dtw_pairwise_distance(filters)
 
 	return dtw_matrix
 
