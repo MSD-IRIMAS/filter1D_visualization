@@ -29,6 +29,12 @@ parser.add_argument(
     default='out')
 
 parser.add_argument(
+	'--distance',
+	help="distance to use for comparing filters",
+	type=str,
+	default='dtw')
+
+parser.add_argument(
 	'--title',
 	help="title of the html page",
 	type=str,
@@ -40,6 +46,6 @@ if len(args.models)!=len(args.layers):
 	print('Number of layer indexes should be the same as number of models')
 	exit()
 
-coordinates, filters = get_coordinates_filters(args.models,args.layers)
+coordinates, filters = get_coordinates_filters(args.models, args.layers, args.distance)
 generate_html(args.outdir,coordinates,filters,args.title)
 

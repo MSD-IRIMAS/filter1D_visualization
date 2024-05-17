@@ -1,14 +1,14 @@
 import numpy as np
 import tensorflow as tf
 from .utils.utils import *
-from aeon.distances import dtw_pairwise_distance
+from aeon.distances import get_pairwise_distance_function
 from sklearn.manifold import TSNE
 
 
 accepted_layers = (tf.keras.layers.Conv1D, tf.keras.layers.SeparableConv1D, tf.keras.layers.DepthwiseConv1D, tf.keras.layers.Conv1DTranspose)
 
 
-def get_coordinates_filters(model_paths, layer_indexes):
+def get_coordinates_filters(model_paths, layer_indexes, distance):
 
 	#store filters set from each model into a list
 	list_filters = []
@@ -26,7 +26,7 @@ def get_coordinates_filters(model_paths, layer_indexes):
 		filters_array = np.vstack((filters_array, list_filters[i]))
 
 	#get tsne coordinates
-	coordinates_array = compute_tsne_coordinates(filters_array)
+	coordinates_array = compute_tsne_coordinates(filters_array, distance)
 	
 	#get list from stacked array
 	list_coordinates = []
@@ -55,17 +55,18 @@ def load_model_filters(model_path, layer_index):
 	return filters
 
 
-def compute_tsne_coordinates(filters):
+def compute_tsne_coordinates(filters, distance):
 
-	dtw_matrix = compute_dtw_matrix(filters)
-	manifold_coordinates = TSNE(init='random', metric='precomputed').fit_transform(dtw_matrix)
+
+	distance_matrix = compute_distance_matrix(filters, distance)
+	manifold_coordinates = TSNE(init='random', metric='precomputed').fit_transform(distance_matrix)
 
 	return manifold_coordinates
 
 
-def compute_dtw_matrix(filters):
+def compute_distance_matrix(filters, distance):
 
-	dtw_matrix = dtw_pairwise_distance(filters)
+	pairwise_dist_func = get_pairwise_distance_function(distance)
+	distance_matrix = pairwise_dist_func(filters)
 
-	return dtw_matrix
-
+	return distance_matrix
