@@ -1,51 +1,33 @@
-import argparse
+import hydra
+from omegaconf import DictConfig, OmegaConf
+
 from src.filters1D import get_coordinates_filters
-from src.visualization import *
+from src.visualization import generate_html
 
-parser = argparse.ArgumentParser(description='Visualize 1D filters from Conv models')
 
-parser.add_argument(
-	'--models',
-	help="path to models to consider",
-	metavar='M',
-	nargs='+',
-    type=str,
-    default='',
-    required=True)
+@hydra.main(config_name="config_hydra.yaml", config_path="config")
+def main(args: DictConfig):
 
-parser.add_argument(
-	'--layers',
-	help="index of layers in corresponding models",
-	metavar='L',
-	nargs='+',
-    type=int,
-    default='',
-    required=True)
+    # save configuration file of the experiment used
+    with open("config.yaml", "w") as f:
+        OmegaConf.save(args, f)
 
-parser.add_argument(
-	'--outdir',
-	help="output directory",
-    type=str,
-    default='out')
+    # assert the number of models is the same as the number of layer indices
+    assert len(args.model_paths) == len(args.layer_indices)
 
-parser.add_argument(
-	'--distance',
-	help="distance to use for comparing filters",
-	type=str,
-	default='dtw')
+    coordinates, filters = get_coordinates_filters(
+        model_paths=args.model_paths,
+        layer_indices=args.layer_indices,
+        distance=args.distance,
+    )
+    
+    generate_html(
+        outdir=args.output_directory,
+        coordinates=coordinates,
+        filters=filters,
+        title=args.title,
+    )
 
-parser.add_argument(
-	'--title',
-	help="title of the html page",
-	type=str,
-	default='Filter visualization')
 
-args = parser.parse_args()
-
-if len(args.models)!=len(args.layers):
-	print('Number of layer indexes should be the same as number of models')
-	exit()
-
-coordinates, filters = get_coordinates_filters(args.models, args.layers, args.distance)
-generate_html(args.outdir,coordinates,filters,args.title)
-
+if __name__ == "__main__":
+    main()

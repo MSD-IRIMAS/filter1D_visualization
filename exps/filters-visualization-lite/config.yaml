@@ -1,0 +1,9 @@
+output_directory: results
+model_paths:
+- /home/aismailfawaz/phd/MSD-IRIMAS/filter1D_visualization/lite_0_coffee.keras
+- /home/aismailfawaz/phd/MSD-IRIMAS/filter1D_visualization/lite_1_coffee.keras
+layer_indices:
+- -5
+- -5
+distance: dtw
+title: Filter 2D Visualization
