@@ -30,6 +30,8 @@ The different parameters include:
 - `model_paths`: A list of model paths to use, make sure to use the absolute path.
 PS: make sure you use `.keras` not `.hdf5` files if you are tf >= 2.15
 - `layer_indices`: a list of layer indices in corresponding models
+- `list_labels`: a list of labels for each of the models
+- `list_colors`: a list of colors in HEX code, if None used colors are randomly generated
 - `distance`: a distance to compare filters among available distances in [Aeon](https://www.aeon-toolkit.org/en/stable/api_reference/distances.html) (default: 'dtw')
 - `title`: title of the html page (default: 'Filter 2D Visualization')
 

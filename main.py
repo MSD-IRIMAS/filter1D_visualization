@@ -13,7 +13,7 @@ def main(args: DictConfig):
         OmegaConf.save(args, f)
 
     # assert the number of models is the same as the number of layer indices
-    assert len(args.model_paths) == len(args.layer_indices)
+    assert len(args.model_paths) == len(args.layer_indices) == len(args.list_labels) == len(args.list_colors)
 
     coordinates, filters = get_coordinates_filters(
         model_paths=args.model_paths,
@@ -25,6 +25,8 @@ def main(args: DictConfig):
         outdir=args.output_directory,
         coordinates=coordinates,
         filters=filters,
+        list_labels=args.list_labels,
+        list_colors=args.list_colors,
         title=args.title,
     )
 

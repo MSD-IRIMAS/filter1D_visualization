@@ -6,7 +6,12 @@ from bokeh.plotting import figure, output_file, save, ColumnDataSource, show
 from .utils.utils import create_directory, generate_distinct_colors
 
 
-def generate_html(outdir: str, coordinates: list, filters: list, title: str):
+def generate_html(outdir: str,
+                  coordinates: list,
+                  filters: list,
+                  list_labels:list,
+                  list_colors:list,
+                  title: str):
     """Function to generate the html file of the plot.
 
     Parameters
@@ -19,12 +24,17 @@ def generate_html(outdir: str, coordinates: list, filters: list, title: str):
     filters: list
 		A list containing the original filters of each model of the
         chosen layer.
+    list_labels: list
+        A list of labels for each model's filters.
     title: str
 		The title of the figure produced.
     """
     create_directory(outdir)
-    list_colors = _save_filters_to_reduced_imgs(outdir, filters)
-    _plot_graph_to_html(outdir, coordinates, filters, title, list_colors)
+    if list_colors is None:
+        list_colors = _save_filters_to_reduced_imgs(outdir, filters)
+    else:
+        list_colors = list_colors
+    _plot_graph_to_html(outdir, coordinates, filters, title, list_colors, list_labels)
     _adapt_html(outdir)
 
 
@@ -48,7 +58,7 @@ def _save_filters_to_reduced_imgs(outdir, filters):
     return list_colors
 
 
-def _plot_graph_to_html(outdir, coordinates, filters, title, list_colors):
+def _plot_graph_to_html(outdir, coordinates, filters, title, list_colors, list_labels):
 
     TOOLS = "hover"
     TOOLTIPS = """
@@ -90,8 +100,11 @@ def _plot_graph_to_html(outdir, coordinates, filters, title, list_colors):
     for s in range(len(sources)):
 
         circles = p.circle(
-            "x", "y", size=10, color=list_colors[s], alpha=0.6, source=sources[s]
+            "x", "y", size=10, color=list_colors[s], alpha=0.6, source=sources[s], 
+            legend_label=list_labels[s]
         )
+
+    p.legend.location = "top_right"
 
     # save
     save(p)

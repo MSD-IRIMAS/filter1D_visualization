@@ -129,18 +129,18 @@ hydra:
   runtime:
     version: 1.3.2
     version_base: '1.1'
-    cwd: /home/aismailfawaz/phd/MSD-IRIMAS/filter1D_visualization
+    cwd: /home/afawaz/phd/msd-irimas/filter1D_visualization
     config_sources:
     - path: hydra.conf
       schema: pkg
       provider: hydra
-    - path: /home/aismailfawaz/phd/MSD-IRIMAS/filter1D_visualization/config
+    - path: /home/afawaz/phd/msd-irimas/filter1D_visualization/config
       schema: file
       provider: main
     - path: ''
       schema: structured
       provider: schema
-    output_dir: /home/aismailfawaz/phd/MSD-IRIMAS/filter1D_visualization/exps/filters-visualization-lite
+    output_dir: /home/afawaz/phd/msd-irimas/filter1D_visualization/exps/filters-visualization-lite
     choices:
       hydra/env: default
       hydra/callbacks: null
