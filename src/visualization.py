@@ -30,17 +30,17 @@ def generate_html(outdir: str,
 		The title of the figure produced.
     """
     create_directory(outdir)
-    if list_colors is None:
-        list_colors = _save_filters_to_reduced_imgs(outdir, filters)
-    else:
-        list_colors = list_colors
+    list_colors = _save_filters_to_reduced_imgs(outdir, filters, list_colors)
     _plot_graph_to_html(outdir, coordinates, filters, title, list_colors, list_labels)
     _adapt_html(outdir)
 
 
-def _save_filters_to_reduced_imgs(outdir, filters):
+def _save_filters_to_reduced_imgs(outdir, filters, list_colors):
 
-    list_colors = generate_distinct_colors(num_colors=len(filters))
+    if list_colors is None:
+        list_colors = generate_distinct_colors(num_colors=len(filters))
+    else:
+        list_colors = list_colors
 
     dir_filter = outdir + "/static/filter_imgs/"
     create_directory(dir_filter)
