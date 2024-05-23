@@ -8,7 +8,9 @@ __pycache__/
 
 *.pdf 
 *.png 
+!imgs/example_image.png
 *.html
+!out/index.html
 *.yaml
 !config/config_hydra.yaml
 
