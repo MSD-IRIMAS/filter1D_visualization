@@ -10,14 +10,17 @@ output_directory: results
 # List of directories where each model is stored
 # PS: give the absolute path
 # PS: make sure you use .keras files if you are tf >= 2.15
-model_paths: ["/home/aismailfawaz/phd/MSD-IRIMAS/filter1D_visualization/lite_0_coffee.keras",
-         "/home/aismailfawaz/phd/MSD-IRIMAS/filter1D_visualization/lite_1_coffee.keras"]
+model_paths: ["/home/afawaz/phd/msd-irimas/filter1D_visualization/lite_0_coffee.keras",
+              "/home/afawaz/phd/msd-irimas/filter1D_visualization/lite_1_coffee.keras"]
 
 # List of layer indices to use for each of the models above
 layer_indices: [-5, -5]
+
+list_labels: ["lite_1_last_conv","lite_2_last_conv"]
+list_colors: ["#FF5733", "#33FF57"]
 
 # Similarity measure used for the filters
 distance: "dtw"
 
 # Figure title
-title: "Filter 2D Visualization"
+title: "Filter 2D Visualization on Coffee Dataset"
