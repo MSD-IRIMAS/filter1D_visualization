@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
-
 from bokeh.plotting import figure, output_file, save, ColumnDataSource, show
+from matplotlib.backends.backend_pdf import PdfPages
 
 from .utils.utils import create_directory, generate_distinct_colors
 
@@ -9,30 +9,31 @@ from .utils.utils import create_directory, generate_distinct_colors
 def generate_html(outdir: str,
                   coordinates: list,
                   filters: list,
-                  list_labels:list,
-                  list_colors:list,
+                  list_labels: list,
+                  list_colors: list,
                   title: str):
     """Function to generate the html file of the plot.
 
     Parameters
     ----------
     outdir: str
-		The output directory to store the results.
+        The output directory to store the results.
     coordinates: list
-		A list containing the 2D filters coordinates of each model
-		of the chosen layer.
+        A list containing the 2D filters coordinates of each model
+        of the chosen layer.
     filters: list
-		A list containing the original filters of each model of the
+        A list containing the original filters of each model of the
         chosen layer.
     list_labels: list
         A list of labels for each model's filters.
     title: str
-		The title of the figure produced.
+        The title of the figure produced.
     """
     create_directory(outdir)
     list_colors = _save_filters_to_reduced_imgs(outdir, filters, list_colors)
     _plot_graph_to_html(outdir, coordinates, filters, title, list_colors, list_labels)
     _adapt_html(outdir)
+    _save_tsne_to_pdf(outdir, coordinates, list_colors, list_labels, title)
 
 
 def _save_filters_to_reduced_imgs(outdir, filters, list_colors):
@@ -62,13 +63,13 @@ def _plot_graph_to_html(outdir, coordinates, filters, title, list_colors, list_l
 
     TOOLS = "hover"
     TOOLTIPS = """
-		<div>
-			<img
-	            src="@imgs" height="96" alt="@imgs" width="96"
-	            style="float: center; margin: 0px 0px 0px 0px;"
-	        ></img>
-		</div>
-	"""
+        <div>
+            <img
+                src="@imgs" height="96" alt="@imgs" width="96"
+                style="float: center; margin: 0px 0px 0px 0px;"
+            ></img>
+        </div>
+    """
 
     # set output to static HTML file
     output_file(filename=outdir + "/index.html", title=title)
@@ -121,3 +122,16 @@ def _adapt_html(outdir):
         )
     with open(outdir + "/index.html", "wb") as html_doc:
         html_doc.write(soup.prettify("utf-8"))
+
+
+def _save_tsne_to_pdf(outdir, coordinates, list_colors, list_labels, title):
+    pdf_path = outdir + "/tsne_plot.pdf"
+    with PdfPages(pdf_path) as pdf:
+        plt.figure(figsize=(10, 10))
+        for i, (coord, color, label) in enumerate(zip(coordinates, list_colors, list_labels)):
+            plt.scatter(coord[:, 0], coord[:, 1], c=color, label=label, alpha=0.6, s=70)
+        plt.title(title)
+        plt.legend(loc='best')
+        plt.axis('off')
+        pdf.savefig()
+        plt.close()
