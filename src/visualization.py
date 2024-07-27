@@ -1,8 +1,6 @@
 import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 from bokeh.plotting import figure, output_file, save, ColumnDataSource, show
-from matplotlib.backends.backend_pdf import PdfPages
-
 from .utils.utils import create_directory, generate_distinct_colors
 
 
@@ -125,13 +123,14 @@ def _adapt_html(outdir):
 
 
 def _save_tsne_to_pdf(outdir, coordinates, list_colors, list_labels, title):
+    
     pdf_path = outdir + "/tsne_plot.pdf"
-    with PdfPages(pdf_path) as pdf:
-        plt.figure(figsize=(10, 10))
-        for i, (coord, color, label) in enumerate(zip(coordinates, list_colors, list_labels)):
-            plt.scatter(coord[:, 0], coord[:, 1], c=color, label=label, alpha=0.6, s=70)
-        plt.title(title)
-        plt.legend(loc='best')
-        plt.axis('off')
-        pdf.savefig()
-        plt.close()
+    plt.figure(figsize=(10, 10))
+    for coord, color, label in zip(coordinates, list_colors, list_labels):
+        plt.scatter(coord[:, 0], coord[:, 1], c=color, label=label, alpha=0.6, s=70)
+    
+    plt.title(title)
+    plt.legend(loc='best')
+    plt.axis('off')
+    plt.savefig(pdf_path, format='pdf')
+    plt.close()
