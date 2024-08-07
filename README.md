@@ -45,3 +45,8 @@ This generates [this html file](https://maxime-devanne.com/pages/filter1D_visual
 <p align="center">
 <img src="imgs/example_image.png" alt="example image" width="70%"/>
 </p>
+
+
+## Acknowledgments
+
+This work was supported by the ANR DELEGATION project (grant ANR-21-CE23-0014) of the French Agence Nationale de la Recherche.
